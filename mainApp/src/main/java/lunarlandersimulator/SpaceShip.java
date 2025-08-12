@@ -235,7 +235,7 @@ public class SpaceShip {
         modifyEngineState(currentEngineState);
         // this group contains all the visible components that make the ship visible and ready for the simulation.
         spaceShipGroup.getChildren().addAll(WinHitBoxOne, WinHitBoxTwo, WinHitBoxThree, WinHitBoxFour, WinHitBoxFive, thrustImageView, spaceShipImageView, fuelTank);
-        resizeShipTransform();
+
     }
 
     public void resizeShipTransform(){
@@ -247,6 +247,7 @@ public class SpaceShip {
         fuelTank.setY(-24);
         fuelTank.setX(-10); // Position at top (full)
         fuelTank.setHeight(remainingFuel/10);
+        resizeShipTransform();
 
     }
     //manages the visual loss of fuel

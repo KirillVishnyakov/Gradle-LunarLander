@@ -4,6 +4,7 @@
  */
 package controllerclasses;
 
+import javafx.scene.image.ImageView;
 import lunarlandersimulator.LunarLanderWorld;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
@@ -33,9 +34,9 @@ public class MainMenuController extends ControllerHelper {
     MenuItem menuItemHelp;
 
     @FXML
-    Canvas canvasLunarLander;
-    @FXML
     AnchorPane anchorPaneMainBack;
+    @FXML
+    ImageView spaceShipInMainMenu;
 
     Stage primaryStage;
 
@@ -54,18 +55,14 @@ public class MainMenuController extends ControllerHelper {
     void initialize() {
         aboutWindow(menuItemHelp, aboutTheWindow);
 
-        Image imageLL = new Image("/images/LLThumbnail.jpg");
+        Image imageLL = new Image("/images/spaceShip.png");
         Image iconMainMenu = new Image("/images/icon.png");
         primaryStage.getIcons().add(iconMainMenu);
-        
 
 
-        GraphicsContext gcLL = canvasLunarLander.getGraphicsContext2D();
-        gcLL.fillRect(31, 65, canvasLunarLander.getWidth(), canvasLunarLander.getHeight());
-        gcLL.drawImage(imageLL, 0, 0, canvasLunarLander.getWidth(), canvasLunarLander.getHeight());
 
 
-        canvasLunarLander.setOnMousePressed((e) -> {
+        spaceShipInMainMenu.setOnMousePressed((e) -> {
 
             Stage LunarLanderStage = new Stage();
             try {
@@ -86,8 +83,5 @@ public class MainMenuController extends ControllerHelper {
 
     }
 
-    public Canvas getCanvasLunarLander() {
-        return canvasLunarLander;
-    }
 
 }

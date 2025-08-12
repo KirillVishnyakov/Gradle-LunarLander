@@ -32,15 +32,15 @@
   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.effect.Glow?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 
 <VBox prefHeight="750.0" prefWidth="1053.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
@@ -60,16 +60,11 @@
     </MenuBar>
     <AnchorPane fx:id="anchorPaneMainBack" maxHeight="-1.0" maxWidth="-1.0" prefHeight="587.0" prefWidth="854.0" VBox.vgrow="ALWAYS">
       <children>
-            <Label layoutX="475.0" layoutY="464.0" text="Lunar Lander" textFill="#e1e1e1" AnchorPane.leftAnchor="475.0" AnchorPane.topAnchor="464.0">
-               <font>
-                  <Font size="18.0" />
-               </font>
-            </Label>
-            <Canvas fx:id="canvasLunarLander" height="394.0" layoutX="316.0" layoutY="44.0" width="423.0" AnchorPane.leftAnchor="316.0">
-               <effect>
-                  <Glow />
-               </effect>
-            </Canvas>
+          <ImageView fx:id="spaceShipInMainMenu" fitWidth="200" fitHeight="150" preserveRatio="true" layoutX="455.0" layoutY="250.0">
+              <image>
+                  <Image url="/images/spaceShip.png" />
+              </image>
+          </ImageView>
             <Label alignment="CENTER" layoutX="101.0" layoutY="469.0" prefHeight="256.0" prefWidth="853.0" style="&#10;" text="Click to Start Playing" textAlignment="CENTER" textFill="#e0e0e0" wrapText="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="101.0" AnchorPane.rightAnchor="99.0" AnchorPane.topAnchor="469.0">
                <font>
                   <Font name="Century Schoolbook Italic" size="19.0" />

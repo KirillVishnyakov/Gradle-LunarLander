@@ -55,9 +55,6 @@ public class GameEngine {
     private long frameTime = 0;
     public double currentNetTime;
     protected final AnimationTimer timer = new AnimationTimer() {
-
-
-
         /**
          * The handle method that is called on each frame update.
          *

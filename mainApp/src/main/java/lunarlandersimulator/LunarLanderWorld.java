@@ -28,6 +28,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import static javafx.scene.paint.Color.valueOf;
 import javafx.scene.paint.Paint;
@@ -83,7 +84,7 @@ public final class LunarLanderWorld extends GameEngine {
      */
     private Alert introAlert = new Alert(INFORMATION);
     
-    private double gravityMultiplier =1;
+    private double gravityMultiplier = 1;
     /**
      * main stage of the simulation.
      */
@@ -427,6 +428,9 @@ public final class LunarLanderWorld extends GameEngine {
         lunarLanderController.setTextOfTextVelocity("Velocity (m/s) : " + displayXVelocity + "x ," + displayYVelocity + " y");
         lunarLanderController.setTextOfTextFuel("Fuel (L) : " + getShip().getRemainingFuel());
         lunarLanderController.setTextOfTextAngle("Current Angle (degrees): " + getShip().getNormalizedAngleWithVertical());
+
+        lunarLanderController.getTextGravity().setText("Current Gravity : " + gravityMultiplier);
+
         //System.out.println("Gravity : " + String.valueOf(accelerationDuetoGravity));
 
     }

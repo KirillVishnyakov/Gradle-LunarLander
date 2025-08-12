@@ -46,3 +46,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-font-size: 15px;
     -fx-text-fill: #FFFFFF;
 }
+
+.transparent-canvas {
+    -fx-background-color: transparent;
+    -fx-opacity: 1.0; /* Adjust as needed */
+}

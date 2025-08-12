@@ -66,6 +66,8 @@ public class LunarLanderController extends ControllerHelper {
     Button buttonHelp;
     @FXML
     HBox terrainHbox;
+    @FXML
+    Text textGravity;
 
 
     Stage primaryStage;
@@ -203,8 +205,12 @@ public class LunarLanderController extends ControllerHelper {
 
 
 
-
-
+    public Text getTextGravity(){
+        return textGravity;
+    }
+    public void setTextGravity(Text textGravity){
+        this.textGravity = textGravity;
+    }
     public Button getButtonPause() {
         return buttonPause;
     }
