@@ -1,5 +1,7 @@
-# Vanier-Galactic-Threat
-INTEGRATIVE PROJECT IN COMPUTER SCIENCE AND MATHEMATICS final project
+# Lunar Lander Fork from college assignment
+
+## Credits  
+- [@TheOdawg](https://github.com/TheOdawg) co-contributor of the orginal version of this project.  
 
 ### Table of contents
 1. [**Description**](#description)
