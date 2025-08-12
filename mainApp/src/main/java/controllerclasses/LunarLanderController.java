@@ -194,7 +194,7 @@ public class LunarLanderController extends ControllerHelper {
      */
     public void setBackgroundImage(ImageView background) {
 
-        getSimulationPane().getChildren().add(0, background);
+        getSimulationPane().getChildren().addFirst(background);
         getSimulationPane().toBack();
         background.fitWidthProperty().bind(getSimulationPane().widthProperty());
         background.fitHeightProperty().bind(getSimulationPane().heightProperty());

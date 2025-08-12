@@ -193,6 +193,8 @@ public class SpaceShip {
     public SpaceShip() {
         this.spaceShipImage = new Image("images/spaceShip.png");
         this.thrustImage = new Image("images/Thrust.png");
+
+
         spaceShipImageView = new ImageView();
         spaceShipImageView.setImage(spaceShipImage);
         WinHitBoxOne = new Rectangle(5, 5, Color.PINK);
@@ -203,6 +205,11 @@ public class SpaceShip {
 
         thrustImageView = new ImageView();
         thrustImageView.setImage(thrustImage);
+
+        //TODO: Make it look better than a Rectangle
+        Rectangle fuelTank = new Rectangle(15, remainingFuel/10, Color.RED);
+        fuelTank.setY(-24);
+        fuelTank.setX(-10); // Position at top (full)
 
 
         thrustImageView.setTranslateY(spaceShipImageView.getBoundsInParent().getMaxY() - thrustImageViewOffset); 
@@ -230,7 +237,14 @@ public class SpaceShip {
 
         modifyEngineState(currentEngineState);
         // this group contains all the visible components that make the ship visible and ready for the simulation.
-        spaceShipGroup.getChildren().addAll(WinHitBoxOne, WinHitBoxTwo, WinHitBoxThree, WinHitBoxFour, WinHitBoxFive, thrustImageView, spaceShipImageView);
+        spaceShipGroup.getChildren().addAll(WinHitBoxOne, WinHitBoxTwo, WinHitBoxThree, WinHitBoxFour, WinHitBoxFive, thrustImageView, spaceShipImageView, fuelTank);
+    }
+
+    //manages the visual loss of fuel
+    public void loseFuel(){
+        Rectangle fuelTank = (Rectangle)spaceShipGroup.getChildren().getLast();
+        fuelTank.setHeight(remainingFuel/10);
+        fuelTank.setY(fuelTank.getY() + 0.1); // Moves down as fuel depletes
     }
     /**
      * @return the height of the simulation pane.

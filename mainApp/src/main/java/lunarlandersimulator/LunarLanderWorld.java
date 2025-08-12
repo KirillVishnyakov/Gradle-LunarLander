@@ -442,6 +442,9 @@ public final class LunarLanderWorld extends GameEngine {
     public boolean updateShipPosAndCheckGroundCollision(double dt) {
 
         getShip().modifyEngineState(usingFuel); //change the state of the shipEngine when the fuel has been converted to thrust force for the next frame.
+        if(usingFuel) {
+            getShip().loseFuel();
+        }
         accelerationDuetoGravity = gravitationalFieldBeforeCorrection(lunarLanderController.getTextPlanet(),shipCurrentHeightinKm*ratioScreenToSimulationMultiplier ) * gravityMultiplier ;
         double gravitationalForce = getShip().getMass() * accelerationDuetoGravity; // Fg = mg
         double thrustForceX = 0;
@@ -555,6 +558,7 @@ public final class LunarLanderWorld extends GameEngine {
     /**
      * Initializes the key events that the players needs to press to play the game.
      */
+    int count = 0;
     public void initShipRotateEvents() {
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
@@ -565,7 +569,9 @@ public final class LunarLanderWorld extends GameEngine {
                     case D ->
                         rotatingRight = true;
                     case W ->{
+                        System.out.println("Pressed " + ++count);
                         usingFuel = true;
+
                     }
                     default -> {
                     }
@@ -610,6 +616,7 @@ public final class LunarLanderWorld extends GameEngine {
         simulationPane.getChildren().add(ship.getSpaceShipGroup());
         
     }
+    //TODO: make gravity weaker as the ship is further from surface.
 
     /**
      * @return The pane containing the scene nodes.

@@ -92,6 +92,7 @@ public class GameEngine {
 
     /**
      * Starts the animation timer used for rendering and updating the game loop.
+     * and takes note of the time we stopped waiting if needed.
      */
     public void start() {
         timer.start();
@@ -100,6 +101,7 @@ public class GameEngine {
 
     /**
      * Stops the animation timer used for rendering and updating the game loop.
+     * and takes note of the time we started waiting if needed.
      */
     public void stop() {
         pausedTimeStart = System.nanoTime();

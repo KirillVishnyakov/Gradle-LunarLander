@@ -56,6 +56,7 @@ public class App extends Application {
         
 
     }
+    //TODO: Add Wind, flying asteroids, and a target landing zone
 
     public static void main(String[] args) {
         launch(args);

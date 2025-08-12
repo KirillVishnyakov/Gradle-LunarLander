@@ -47,9 +47,9 @@ public class TerrainGeneration {
      * @return returns a filled HBox full of terrain segments
      */
     public HBox generateWorld(HBox terrainRow) {
-        System.out.println(terrainRow);
         terrainRow.getChildren().clear();
         refreshSeedStream();
+        int heightFactor = 12;
         int[] seed = createSeedList();
 
         for (int i = 0; i < seed.length; i++) {
@@ -57,17 +57,16 @@ public class TerrainGeneration {
             Rectangle terrainBlock = new Rectangle();
 
             terrainBlock.setWidth(60);
-       
-            switch (i) {
-                case 0 ->
-                    terrainBlock.setHeight(20 + seed[i] * 20);
-                case 1 ->
-                    terrainBlock.setHeight((double) ((20 + seed[i] * 20) + (20 + seed[i - 1] * 20)) / 2);
-                case 2 ->
-                    terrainBlock.setHeight((double) ((20 + seed[i] * 20) + (20 + seed[i - 1] * 20) + (20 + seed[i - 2] * 20)) / 3);
-                default ->
-                    terrainBlock.setHeight((double) ((20 + seed[i] * 20) + (20 + seed[i - 1] * 20) + (20 + seed[i - 2] * 20) + (20 + seed[i - 3] * 20)) / 4);
+            double baseHeight = heightFactor + seed[i] * heightFactor;
+            int lookback = Math.min(i, 3);
+            double sum = baseHeight;
+
+            for (int j = 1; j <= lookback; j++) {
+                sum += heightFactor + seed[i - j] * heightFactor;
             }
+            terrainBlock.setHeight(sum / (lookback + 1));
+
+
             terrainBlock.toFront();
             terrainBlock.setId("TerrainBlgit ock");
             terrainRow.getChildren().add(terrainBlock);
@@ -77,7 +76,7 @@ public class TerrainGeneration {
         currentTerrainHbox = terrainRow;
         return terrainRow;
     }
-    
+
     /**
      * Shifts the terrain to the direction of the ship. This takes the terrain
      * terrain from the HBox which holds all the terrain. First creates a copy 
@@ -110,8 +109,6 @@ public class TerrainGeneration {
         }
     
     }
-    
-    
     
     }
 
