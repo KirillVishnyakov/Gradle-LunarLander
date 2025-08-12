@@ -1,15 +1,7 @@
 # Lunar Lander Fork from college assignment
 
-## Credits  
+### Credits  
 - [@TheOdawg](https://github.com/TheOdawg) co-contributor of the orginal version of this project.  
-
-### Table of contents
-1. [**Description**](#description)
-    1. [**Lunar Lander Simulator**](#lunarLanderSimulatorDescription)
-
-
-
-
 
 ## Description <a name="description"></a>
 
