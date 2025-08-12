@@ -7,9 +7,11 @@ package lunarlandersimulator;
 import controllerclasses.LunarLanderController;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -32,6 +34,9 @@ import javafx.scene.paint.Paint;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Modality;
 import javafx.util.Duration;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import static lunarlandersimulator.PhysicsHelper.gravitationalFieldBeforeCorrection;
 
 /**
@@ -40,6 +45,7 @@ import static lunarlandersimulator.PhysicsHelper.gravitationalFieldBeforeCorrect
  */
 public final class LunarLanderWorld extends GameEngine {
 
+    private static final Log log = LogFactory.getLog(LunarLanderWorld.class);
     /**
      * The scene nodes for the lunar lander simulation.
      */
@@ -72,10 +78,6 @@ public final class LunarLanderWorld extends GameEngine {
      * The angle the ship rotates every frame of the animation.
      */
     private double rotationAnglePerFrame = 0;
-    /**
-     * Indicates whether the simulation is running/on/active or not.
-     */
-    private boolean isRunning = true;
     /**
      * Introduction alert.
      */
@@ -110,6 +112,9 @@ public final class LunarLanderWorld extends GameEngine {
      * the thrust sound effect of the ship.
      */
     private final MediaPlayer shipThrustSound;
+    private double pauseStartTime;
+    private double pauseEndTime;
+
     /**
      * LunarLanderWorld's constructor method.
      * 
@@ -160,11 +165,11 @@ public final class LunarLanderWorld extends GameEngine {
 
         primaryStage.setScene(getScene());
 
-        this.timer.start();
+        start();
 
         primaryStage.setOnCloseRequest(event -> {
-            System.out.println("close event request");
-            this.timer.stop();
+            //System.out.println("close event request");
+            stop();
         });
 
         lunarLanderController.aboutWindow(lunarLanderController.helpLanding, "To land you must: "
@@ -172,30 +177,38 @@ public final class LunarLanderWorld extends GameEngine {
                 + "\n -Decrease Verticle speed to be less than : " + collisionHandler.getMaxSpeedY()
                 + "\n -Make sure current angle is 0, or perpendicular with the surface.");
 
-        lunarLanderController.getButtonPause().setOnAction((event) -> {
-            if (isRunning) {
+
+
+        lunarLanderController.getButtonPause().setOnAction(event -> {
+            if (getIsRunning()) {
+
+                shipThrustSound.setVolume(0);
                 stop();
-                lunarLanderController.getButtonPause().setText("Un-Pause");
-                isRunning = false;
+
             } else {
                 start();
-                lunarLanderController.getButtonPause().setText("Pause");
-                isRunning = true;
+                if(usingFuel){
+
+                    shipThrustSound.setVolume(0.4);
+                }
             }
+            setIsRunning(!getIsRunning());
+            lunarLanderController.getButtonPause().setText(getIsRunning() ? "Pause" : "Un-Pause");
+
         });
 
 
         lunarLanderController.getButtonReset().setOnAction((event) -> {
             resetSimulation();
             lunarLanderController.victoryScreen.close();
-            if(lunarLanderController.getButtonPause().getText().equals("Un-Pause"))
-                lunarLanderController.getButtonPause().setText("Pause");
-            isRunning = true;    
+            lunarLanderController.getButtonPause().setText(getIsRunning() ? "Pause" : "Un-Pause");
+            setIsRunning(true);
         });
         
         lunarLanderController.resultScreenSettings();
 
     }
+
 
     /**
      * Resets the program to the state it was initially.
@@ -207,7 +220,7 @@ public final class LunarLanderWorld extends GameEngine {
         getShip().setRemainingFuel(initialFuel);
         getShip().getSpaceShipGroup().getChildren().get(getShip().getThrustImageViewPosInGroup()).setVisible(true);
         shipCurrentHeightinKm = getShip().getShipInitialHeight();
-        gravityMultiplier = lunarLanderController.getSliderGravity().getValue();
+        gravityMultiplier = 1;
         getShip().resetShip();
         initialXVelocity = 0;
         initialYVelocity = 0;
@@ -391,30 +404,28 @@ public final class LunarLanderWorld extends GameEngine {
 
         double temp = Math.round(number * 10);
         temp = temp / 10;
-    
+
         return temp;
     }
-    
+    double currentTimeSeconds = 0;
     /**
      * A method called every frame, used to update the stat trackers for the
-     * player's visual pleasure.
+     * player's visual.
      *
      * @param elapsedTime The time between the previous and current frame.
      */
     @Override
     public void updateStats(double elapsedTime) {
 
-        
-        double currentTimeSeconds = (System.nanoTime() - initialTimeNanoseconds) / nanoToUnit;
-        currentTimeSeconds = roundToOneDecimal(currentTimeSeconds);
+
+        currentTimeSeconds +=  elapsedTime/ nanoToUnit;
         displayXVelocity = roundToOneDecimal(getShip().getCurrentXVelocity());
         displayYVelocity = roundToOneDecimal(getShip().getCurrentYVelocity());
 
-        lunarLanderController.setTextOfTextTimeSeconds("Time (s): " + currentTimeSeconds);
+        lunarLanderController.setTextOfTextTimeSeconds("Time (s): " + roundToOneDecimal(currentTimeSeconds));
         lunarLanderController.setTextOfTextVelocity("Velocity (m/s) : " + displayXVelocity + "x ," + displayYVelocity + " y");
         lunarLanderController.setTextOfTextFuel("Fuel (L) : " + getShip().getRemainingFuel());
         lunarLanderController.setTextOfTextAngle("Current Angle (degrees): " + getShip().getNormalizedAngleWithVertical());
-        lunarLanderController.setGravityText("Gravity : " + String.valueOf(Math.ceil(accelerationDuetoGravity*10000)/10000));
         //System.out.println("Gravity : " + String.valueOf(accelerationDuetoGravity));
 
     }
@@ -426,6 +437,7 @@ public final class LunarLanderWorld extends GameEngine {
      * @param dt delta time, which is the time elapsed between frames.
      * @return whether the ship has collided.
      */
+
     @Override
     public boolean updateShipPosAndCheckGroundCollision(double dt) {
 

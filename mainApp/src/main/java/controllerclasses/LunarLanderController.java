@@ -45,14 +45,6 @@ public class LunarLanderController extends ControllerHelper {
     @FXML
     public MenuItem helpAbout;
     @FXML
-    Text textGravity;
-    @FXML
-    Slider sliderGravity;
-    @FXML
-    Button buttonGravityUpdate;
-    @FXML
-    TextField textFieldGravity;
-    @FXML
     Pane SimulationPane;
     @FXML
     AnchorPane SimulationAnchorPane;
@@ -167,14 +159,12 @@ public class LunarLanderController extends ControllerHelper {
         aboutWindow(helpLanding, infoHelpLanding);
         aboutWindow(helpControls, infoControls);
         aboutWindow(helpAbout, infoSimulation);
-        sliderSetup(sliderGravity, 30d);
 
         Image iconLunarLander = new Image("/images/spaceShip.png");
         primaryStage.getIcons().add(iconLunarLander);
 
-        putItemsInMenuBar(sliderGravity, textGravity, textPlanet);
+
         menuButtonChangePlanetAfterResult.setText("Change planet?");
-        putItemsInMenuBar(sliderGravity, textGravity, textPlanet);
 
 
         helpUI.setOnAction((event) -> {
@@ -191,22 +181,9 @@ public class LunarLanderController extends ControllerHelper {
         infoUIScreen.setTitle("UI info Screen");
 
         setTextOfTextPlanet("Set Planet : Earth"); //initial setting
-        textGravity.setText("Set Gravity (G) : 1");
-        customGravityInput(buttonGravityUpdate, sliderGravity, textFieldGravity);
 
         setBackgroundImage(new ImageView(new Image("images/Space.PNG")));
 
-        sliderGravity.valueProperty().addListener(new ChangeListener<Number>() {
-
-            @Override
-            public void changed(
-                    ObservableValue<? extends Number> observableValue,
-                    Number oldValue,
-                    Number newValue) {
-                textGravity.setText("Gravity : " + sliderGravity.getValue());
-            }
-
-        });
 
     }
 
@@ -223,21 +200,8 @@ public class LunarLanderController extends ControllerHelper {
         background.fitHeightProperty().bind(getSimulationPane().heightProperty());
 
     }
-    public void setGravityText(String textGravity){
-    
-        this.textGravity.setText(textGravity);
-    }
-    public Text getGravityText(){
-    
-        return this.textGravity;
-    }
-    public Slider getSliderGravity() {
-        return sliderGravity;
-    }
 
-    public void setSliderGravity(Slider sliderGravity) {
-        this.sliderGravity = sliderGravity;
-    }
+
 
 
 

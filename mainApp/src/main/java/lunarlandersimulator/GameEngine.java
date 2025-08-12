@@ -6,12 +6,15 @@ package lunarlandersimulator;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.layout.Pane;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * The highest level, the GameEngine class runs every frame and handles the animation timing.
  * @author Kirill Vishnyakov
  */
 public class GameEngine {
+    private static final Log log = LogFactory.getLog(GameEngine.class);
     /**
      * Space ship object.
      */
@@ -45,13 +48,19 @@ public class GameEngine {
      */
     private int frameCounter = 0;
     /**
-     * The animation timer used for rendering and updating the game loop.
+     * Indicates whether the simulation is running/on/active or not.
      */
+    private boolean isRunning = true;
+    long pausedTimeStart = 0;
+    long pausedTimeEnd = 0;
+    double pausedTime = 0;
+    boolean wasPaused = false;
+    public long lastTime = System.nanoTime();
+    private long frameTime = 0;
+    public double currentNetTime;
     protected final AnimationTimer timer = new AnimationTimer() {
 
-        // Variables used for timing and frame rate calculation
-        private long lastTime = System.nanoTime();
-        private long frameTime = 0;
+
 
         /**
          * The handle method that is called on each frame update.
@@ -60,9 +69,16 @@ public class GameEngine {
          */
         @Override
         public void handle(long currentTime) {
-            elapsedTime = currentTime - lastTime;
+
+            if(wasPaused){
+                pausedTime += pausedTimeEnd - pausedTimeStart;
+                wasPaused = false;
+            }
+
+            elapsedTime = currentTime - lastTime - pausedTime;
             lastTime = currentTime;
             frameTime += elapsedTime;
+            pausedTime = 0;
 
             // If the frame time has reached the desired frame duration, update and render
             if (frameTime >= FRAME_DURATION) {
@@ -70,28 +86,26 @@ public class GameEngine {
                 render();
                 frameTime -= FRAME_DURATION;
             }
+
         }
     };
-    
-    /**
-     * @return The animation timer used for rendering and updating the game loop.
-     */
-    protected AnimationTimer getTimer() {
-        return timer;
-    }
 
     /**
      * Starts the animation timer used for rendering and updating the game loop.
      */
     public void start() {
         timer.start();
+        pausedTimeEnd = System.nanoTime();
     }
 
     /**
      * Stops the animation timer used for rendering and updating the game loop.
      */
     public void stop() {
+        pausedTimeStart = System.nanoTime();
+        wasPaused = true;
         timer.stop();
+
     }
 
     protected void changeGravity() {
@@ -106,19 +120,17 @@ public class GameEngine {
         
         checkCollisions();
         updateStats(elapsedTime);
+        //System.out.println(elapsedTime);
          if (!(collisionHandler.getHasShipTouchedDown()))
             { 
             rotateShip();
             }
-        
+
         // Manage ship physics and stop the timer if the ship has crashed.
         if (updateShipPosAndCheckGroundCollision((FRAME_DURATION) / 1e9)) {
             //stops if the ship has collided with the ground.
             stop();
 
-        }
-        else{
-            //doesnt stop if returns false.
         }
     }
     /**
@@ -173,7 +185,12 @@ public class GameEngine {
         // Set the space simulation pane for the collision handler
         collisionHandler.setSpaceSimulationPane(LunarlanderSimulationPane);
     }
-
+    public boolean getIsRunning() {
+        return isRunning;
+    }
+    public void setIsRunning(boolean b) {
+        isRunning = b;
+    }
     public SpaceShip getShip() {
         return ship;
     }
