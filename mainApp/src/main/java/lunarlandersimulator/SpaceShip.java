@@ -7,7 +7,6 @@ package lunarlandersimulator;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Bounds;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -15,10 +14,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.NonInvertibleTransformException;
-import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
-import javafx.scene.transform.Translate;
+import javafx.scene.transform.*;
 
 /**
  * This class configures all the fields and methods related to the space ship.
@@ -187,6 +183,8 @@ public class SpaceShip {
      */
     private double remainingFuel = 1000; //some units
 
+    private Rectangle fuelTank;
+
     /**
      * SpaceShip's constructor, initializes the initial conditions of the spaceShip group.
      */
@@ -207,12 +205,11 @@ public class SpaceShip {
         thrustImageView.setImage(thrustImage);
 
         //TODO: Make it look better than a Rectangle
-        Rectangle fuelTank = new Rectangle(15, remainingFuel/10, Color.RED);
-        fuelTank.setY(-24);
-        fuelTank.setX(-10); // Position at top (full)
+        fuelTank = new Rectangle(15, remainingFuel/10, Color.RED);
+        initFuelTankCoord();
 
+        thrustImageView.setTranslateY(spaceShipImageView.getBoundsInParent().getMaxY() - thrustImageViewOffset);
 
-        thrustImageView.setTranslateY(spaceShipImageView.getBoundsInParent().getMaxY() - thrustImageViewOffset); 
 
         WinHitBoxOne.setTranslateY(hitBoxTranslateY);
         WinHitBoxTwo.setTranslateY(hitBoxTranslateY);
@@ -238,37 +235,24 @@ public class SpaceShip {
         modifyEngineState(currentEngineState);
         // this group contains all the visible components that make the ship visible and ready for the simulation.
         spaceShipGroup.getChildren().addAll(WinHitBoxOne, WinHitBoxTwo, WinHitBoxThree, WinHitBoxFour, WinHitBoxFive, thrustImageView, spaceShipImageView, fuelTank);
+        resizeShipTransform();
     }
 
+    public void resizeShipTransform(){
+        Scale resize = new Scale(0.7, 0.7);
+        getSpaceShipGroup().getTransforms().addAll(resize);
+    }
+    //TODO: Normalize X,Y relative to ship and not just numbers
+    public void initFuelTankCoord(){
+        fuelTank.setY(-24);
+        fuelTank.setX(-10); // Position at top (full)
+        fuelTank.setHeight(remainingFuel/10);
+
+    }
     //manages the visual loss of fuel
     public void loseFuel(){
-        Rectangle fuelTank = (Rectangle)spaceShipGroup.getChildren().getLast();
         fuelTank.setHeight(remainingFuel/10);
         fuelTank.setY(fuelTank.getY() + 0.1); // Moves down as fuel depletes
-    }
-    /**
-     * @return the height of the simulation pane.
-     */
-    public double getSimulationPaneHeight() {
-        return simulationPaneHeight;
-    }
-    /**
-     * @param simulationPaneHeight the height of the simulation pane.
-     */
-    public void setSimulationPaneHeight(double simulationPaneHeight) {
-        this.simulationPaneHeight = simulationPaneHeight;
-    }
-    /**
-     * @return the initial height of the ship.
-     */
-    public double getShipInitialHeight() {
-        return shipInitialHeight;
-    }
-    /**
-     * @param shipInitialHeight the initial height of the ship.
-     */
-    public void setShipInitialHeight(double shipInitialHeight) {
-        this.shipInitialHeight = shipInitialHeight;
     }
     
     /**
@@ -285,30 +269,7 @@ public class SpaceShip {
         simulationPaneWidth = simPaneBounds.getMaxX() - simPaneBounds.getMinX();
     
     }
-    /**
-     * @return the position of the thrustImageView inside the children of the spaceShipGroup.
-     */
-    public int getThrustImageViewPosInGroup() {
-        return thrustImageViewPosInGroup;
-    }
-    /**
-     * @param thrustImageViewPosInGroup position of the thrustImageView inside the children of the spaceShipGroup.
-     */
-    public void setThrustImageViewPosInGroup(int thrustImageViewPosInGroup) {
-        this.thrustImageViewPosInGroup = thrustImageViewPosInGroup;
-    }
-    /**
-     * @return the remaining fuel.
-     */
-    public double getRemainingFuel() {
-        return remainingFuel;
-    }
-    /**
-     * @param remainingFuel remaining fuel.
-     */
-    public void setRemainingFuel(double remainingFuel) {
-        this.remainingFuel = remainingFuel;
-    }
+
     /**
      * Initializes the initial x and y position of the space ship group.
      * @param x x position of the spaceship before translation.
@@ -343,6 +304,7 @@ public class SpaceShip {
         initInitialSpaceShipPos(simulationPaneHeight/9, simulationPaneHeight/11);
         thrustImageView.setTranslateY(spaceShipImageView.getBoundsInParent().getMaxY() - thrustImageViewOffset);
         spaceShipImageView.setImage(spaceShipImage);
+        initFuelTankCoord();
         
         // applies every inverted transform to the ship to bring it back to its initial angle.
         spaceShipGroup.getTransforms().addAll(resetTransforms);
@@ -352,6 +314,7 @@ public class SpaceShip {
         getSpaceShipGroup().getTransforms().clear();
         angleWithVertical = 0;
         angleCounter = 0;
+        initFuelTankCoord();
 
     }
     /**
@@ -375,36 +338,6 @@ public class SpaceShip {
             hitBoxArray[i] = spaceShipGroup.getChildren().get(i);
         }
         return hitBoxArray;
-    }
-    /**
-     * @return the space ship group.
-     */
-    public Group getSpaceShipGroup() {
-        return spaceShipGroup;
-    }
-    /**
-     * @param spaceShipGroup the space Ship group.
-     */
-    public void setSpaceShipGroup(Group spaceShipGroup) {
-        this.spaceShipGroup = spaceShipGroup;
-    }
-    /**
-     * @return the width of the spaceShip imageView.
-     */
-    public double getSpaceShipWidth() {
-
-        return getSpaceShipImageView().getBoundsInLocal().getWidth();
-    }
-    /**
-     * @return the height of the spaceShip imageView.
-     */
-    public double getSpaceShipHeight() {
-        double x = 0;
-        double y = 0;
-        Point2D localPoint = new Point2D(x,y);
-        Point2D parentPoint = this.getSpaceShipGroup().localToParent(localPoint);
-        
-        return simulationPaneHeight - parentPoint.getY();
     }
     /**
      * Modifies the state of the engine by taking in the newEngineState boolean.
@@ -599,6 +532,74 @@ public class SpaceShip {
 
     public void setAngleCounter(double angleCounter) {
         this.angleCounter = angleCounter;
+    }
+    /**
+     * @return the height of the simulation pane.
+     */
+    public double getSimulationPaneHeight() {
+        return simulationPaneHeight;
+    }
+    /**
+     * @param simulationPaneHeight the height of the simulation pane.
+     */
+    public void setSimulationPaneHeight(double simulationPaneHeight) {
+        this.simulationPaneHeight = simulationPaneHeight;
+    }
+    /**
+     * @return the initial height of the ship.
+     */
+    public double getShipInitialHeight() {
+        return shipInitialHeight;
+    }
+    /**
+     * @param shipInitialHeight the initial height of the ship.
+     */
+    public void setShipInitialHeight(double shipInitialHeight) {
+        this.shipInitialHeight = shipInitialHeight;
+    }
+    /**
+     * @return the position of the thrustImageView inside the children of the spaceShipGroup.
+     */
+    public int getThrustImageViewPosInGroup() {
+        return thrustImageViewPosInGroup;
+    }
+    /**
+     * @param thrustImageViewPosInGroup position of the thrustImageView inside the children of the spaceShipGroup.
+     */
+    public void setThrustImageViewPosInGroup(int thrustImageViewPosInGroup) {
+        this.thrustImageViewPosInGroup = thrustImageViewPosInGroup;
+    }
+    /**
+     * @return the remaining fuel.
+     */
+    public double getRemainingFuel() {
+        return remainingFuel;
+    }
+    /**
+     * @param remainingFuel remaining fuel.
+     */
+    public void setRemainingFuel(double remainingFuel) {
+        this.remainingFuel = remainingFuel;
+    }
+    /**
+     * @return the width of the spaceShip imageView.
+     */
+    public double getSpaceShipWidth() {
+
+        return getSpaceShipImageView().getBoundsInLocal().getWidth();
+    }
+    /**
+     * @return the space ship group.
+     */
+    public Group getSpaceShipGroup() {
+        return spaceShipGroup;
+    }
+
+    /**
+     * @param spaceShipGroup the space Ship group.
+     */
+    public void setSpaceShipGroup(Group spaceShipGroup) {
+        this.spaceShipGroup = spaceShipGroup;
     }
     
 }

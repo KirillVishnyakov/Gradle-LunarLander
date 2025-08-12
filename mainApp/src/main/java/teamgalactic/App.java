@@ -36,7 +36,7 @@ public class App extends Application {
         
         Pane root = loader.load();
         
-        Image img = new Image("/images/starryBackground.jpg");
+        Image img = new Image("/images/spaceBG.png");
             BackgroundImage bImg = new BackgroundImage(img,
             BackgroundRepeat.NO_REPEAT,
             BackgroundRepeat.NO_REPEAT,

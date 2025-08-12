@@ -114,6 +114,7 @@ public final class LunarLanderWorld extends GameEngine {
     private final MediaPlayer shipThrustSound;
     private double pauseStartTime;
     private double pauseEndTime;
+    private double currentTimeSeconds = 0;
 
     /**
      * LunarLanderWorld's constructor method.
@@ -228,7 +229,7 @@ public final class LunarLanderWorld extends GameEngine {
         finalYVelocity = 0;
         yAcceleration = 0;
         xAcceleration = 0;
-        initialTimeNanoseconds = System.nanoTime();
+        currentTimeSeconds = 0;
         rotatingLeft = false;
         rotatingRight = false;
         usingFuel = false;
@@ -407,7 +408,7 @@ public final class LunarLanderWorld extends GameEngine {
 
         return temp;
     }
-    double currentTimeSeconds = 0;
+
     /**
      * A method called every frame, used to update the stat trackers for the
      * player's visual.
@@ -438,6 +439,8 @@ public final class LunarLanderWorld extends GameEngine {
      * @return whether the ship has collided.
      */
 
+    double speedFactor;
+    double gravityCorrection = 3.5;
     @Override
     public boolean updateShipPosAndCheckGroundCollision(double dt) {
 
@@ -446,12 +449,16 @@ public final class LunarLanderWorld extends GameEngine {
             getShip().loseFuel();
         }
         accelerationDuetoGravity = gravitationalFieldBeforeCorrection(lunarLanderController.getTextPlanet(),shipCurrentHeightinKm*ratioScreenToSimulationMultiplier ) * gravityMultiplier ;
-        double gravitationalForce = getShip().getMass() * accelerationDuetoGravity; // Fg = mg
+        double gravitationalForce = getShip().getMass() * accelerationDuetoGravity * gravityCorrection; // Fg = mg
         double thrustForceX = 0;
         double thrustForceY = 0;
         //sets an initial X velocity to the right as if the ship has already been moving to the right before the start of the simulation.
         if(getFrameCounter()==0){
+            speedFactor = 1;
             thrustForceX += 5000000;
+        }
+        else{
+            speedFactor = 3;
         }
         //its no longer the first frame.
         setFrameCounter(getFrameCounter()+1);
@@ -484,8 +491,8 @@ public final class LunarLanderWorld extends GameEngine {
         }
         else{
             // this code is just an application of 2d kinematics.
-            netVerticalForce = thrustForceY - gravitationalForce;
-            netHorizontalForce = thrustForceX;
+            netVerticalForce = (thrustForceY*speedFactor) - gravitationalForce;
+            netHorizontalForce = thrustForceX*speedFactor;
             yAcceleration = netVerticalForce / getShip().getMass();
             finalYVelocity = initialYVelocity + (yAcceleration * dt);
             initialYPos = ((initialYVelocity + finalYVelocity) / 2) * dt;
@@ -494,9 +501,13 @@ public final class LunarLanderWorld extends GameEngine {
             finalXVelocity = initialXVelocity + (xAcceleration * dt);
             initialXPos = ((initialXVelocity + finalXVelocity) / 2) * dt;
             initialXVelocity = finalXVelocity;
-            getShip().getSpaceShipGroup().setTranslateY(-initialYPos + getShip().getSpaceShipGroup().getTranslateY());
+
             shipCurrentHeightinKm += initialYPos;
+
+            //translate the ship
             getShip().getSpaceShipGroup().setTranslateX(initialXPos + getShip().getSpaceShipGroup().getTranslateX());
+            getShip().getSpaceShipGroup().setTranslateY(-initialYPos + getShip().getSpaceShipGroup().getTranslateY());
+
             getShip().setCurrentXVelocity(initialXVelocity);
             getShip().setCurrentYVelocity(initialYVelocity);
         }

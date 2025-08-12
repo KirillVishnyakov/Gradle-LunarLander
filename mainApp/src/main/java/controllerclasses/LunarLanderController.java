@@ -182,7 +182,7 @@ public class LunarLanderController extends ControllerHelper {
 
         setTextOfTextPlanet("Set Planet : Earth"); //initial setting
 
-        setBackgroundImage(new ImageView(new Image("images/Space.PNG")));
+        setBackgroundImage(new ImageView(new Image("images/space.png")));
 
 
     }

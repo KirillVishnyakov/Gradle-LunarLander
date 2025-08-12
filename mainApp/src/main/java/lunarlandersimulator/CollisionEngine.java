@@ -25,8 +25,8 @@ public class CollisionEngine {
     private ImageView spaceShipImageView;
     private Bounds shipBounds;
     private HBox terrainH;
-    private double maxSpeedX = 20.0;
-    private double maxSpeedY = 26.0;
+    private double maxSpeedX = 60.0;
+    private double maxSpeedY = 40.0;
     private boolean hasShipTouchedDown = false;
     public boolean hasWon = false;
     private Node[] HitBoxes;
@@ -100,7 +100,7 @@ public class CollisionEngine {
             if (spaceShip.getSpaceShipGroup().getTranslateX() < 0 ){
                  spaceShip.getSpaceShipGroup().setTranslateX(spaceSimulationPane.getLayoutBounds().getWidth()-100);
                  return 1;
-                } ;
+                }
             //if ship is to the right
             //teleport ship to leftside and +100 for a little room
             if (spaceShip.getSpaceShipGroup().getTranslateX() > spaceSimulationPane.getLayoutBounds().getWidth()){
@@ -112,19 +112,16 @@ public class CollisionEngine {
             if (spaceShip.getSpaceShipGroup().getTranslateY() < -100 ){
 
                  return 3;
-                } ;
+                }
             //this event should almost never trigger due to the terrain at the bottom.
             if (spaceShip.getSpaceShipGroup().getTranslateY() > spaceSimulationPane.getLayoutBounds().getHeight() ){
 
                  return 4;
-                } ;
+                }
 
             }
-        // if (spaceSimulationPane.getLayoutBounds().contains(getBoundsInSimulationPane(HitBoxes[j]))) {} 
-        //if the ship isn't out of bounds, it's assumed to be in bounds. 
         return 0;
     }
-
 
     /**
      * compares the speed and the angle at which the ship lands and determines whether the ship should explode or not.
@@ -137,14 +134,10 @@ public class CollisionEngine {
          && Math.abs(spaceShip.getCurrentYVelocity()) < maxSpeedY) {
             
             if (spaceShip.getNormalizedAngleWithVertical() < maxAngleForLanding) {
-                
-                //Ship landed, run victory function               
                 hasWon = true;
             }
 
         } else {
-            
-            //Ship crashed, run failure function
             hasWon = false;
         }
 

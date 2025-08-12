@@ -40,10 +40,6 @@ public class GameEngine {
      */
     private double elapsedTime;
     /**
-     * The initial time recorded by the system in nanoseconds.
-     */
-    public long initialTimeNanoseconds = System.nanoTime();
-    /**
      * counts the number of frames elapsed.
      */
     private int frameCounter = 0;
@@ -217,13 +213,6 @@ public class GameEngine {
         this.elapsedTime = elapsedTime;
     }
 
-    public long getInitialTimeNanoseconds() {
-        return initialTimeNanoseconds;
-    }
-
-    public void setInitialTimeNanoseconds(long initialTimeNanoseconds) {
-        this.initialTimeNanoseconds = initialTimeNanoseconds;
-    }
 
     public int getFrameCounter() {
         return frameCounter;
