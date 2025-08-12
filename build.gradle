@@ -1,20 +1,37 @@
 plugins {
+    id 'application'
     id 'java'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
-
-group = 'org.example'
-version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
-
-dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+sourceSets {
+    main {
+        java {
+            srcDirs = ['mainApp/src/main/java']  // Java sources
+        }
+        resources {
+            srcDirs = ['mainApp/src/main/resources']  // Resources (FXML, images, etc.)
+        }
+    }
+}
+javafx {
+    version = "21"
+    modules = ['javafx.controls', 'javafx.fxml', 'javafx.media']
 }
 
-test {
-    useJUnitPlatform()
+dependencies {
+    implementation 'com.opencsv:opencsv:5.9'
+}
+
+application {
+    mainClass = 'teamgalactic.App'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }

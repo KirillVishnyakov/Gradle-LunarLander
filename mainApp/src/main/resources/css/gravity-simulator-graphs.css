@@ -1,0 +1,48 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Apr. 16, 2023, 10:02:21 a.m.
+    Author     : Isabel Romero
+*/
+
+.chart{
+    -fx-padding: 10px;
+    
+}
+
+.axis-label {
+  -fx-text-fill: #FFFFFF;
+}
+ 
+.chart-legend {
+   -fx-background-color:  transparent;
+   -fx-padding: 20px;
+}
+ 
+.chart-legend-item-symbol{
+   -fx-background-radius: 0;
+}
+ 
+.chart-legend-item{
+    -fx-text-fill: #191970;
+}
+ 
+.chart-alternative-row-fill {
+    -fx-fill: transparent;
+    -fx-stroke: transparent;
+    -fx-stroke-width: 0;
+}
+
+.axis {    
+    -fx-tick-label-fill: #FFFFFF;
+    -fx-font-family: Tahoma;
+    -fx-tick-length: 10;
+    -fx-minor-tick-length: 5;
+}
+
+.chart-title {
+    -fx-font-size: 15px;
+    -fx-text-fill: #FFFFFF;
+}
