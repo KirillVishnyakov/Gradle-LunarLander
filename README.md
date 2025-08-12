@@ -20,14 +20,8 @@ The color of the terrain changes based on what planet is selected. When the user
 ## Technical Description <a name="technicalDescription"></a>
 
 ### How to compile and run the project
-
-* Clone repository from Github using bash 
-  - Get the URL to the repo (Get permission first)
-  - Open the command line to where you want the repository to be
-  - git clone URL -to-the-repo
-* Open project in an IDE such as NetBeans
-* Clean and build/ Resolve issues
-* Run the project
+in command line navigate to \Gradle-LunarLander and do: gradle run
+You need gradle and java installed
 
 ### Framework used
 Build system:
