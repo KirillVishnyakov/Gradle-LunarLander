@@ -1,4 +1,4 @@
-# Lunar Lander Fork from college assignment
+# Simple Lunar Lander
 
 ### Credits  
 - [@TheOdawg](https://github.com/TheOdawg) co-contributor of the orginal version of this project.  
