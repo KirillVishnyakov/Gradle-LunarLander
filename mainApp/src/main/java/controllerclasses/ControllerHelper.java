@@ -112,9 +112,6 @@ public class ControllerHelper {
         alertInformation.setContentText(message);
         alertInformation.setTitle("Information: ");
 
-        aboutMenuItem.setOnAction((event) -> {
-            alertInformation.show();
-        });
     }
 
     /**
@@ -127,7 +124,7 @@ public class ControllerHelper {
      */
     public boolean testTextFieldForNumbers(TextField textfield) {
 
-        Double value = 0.0;
+        double value = 0.0;
 
         if (textfield.getText().equals("")) {
             System.out.println("Text field is empty");
@@ -138,7 +135,7 @@ public class ControllerHelper {
 
             try {
 
-                value = Double.valueOf(textfield.getText());
+                value = Double.parseDouble(textfield.getText());
                 return true;
 
             } catch (Exception e) {
@@ -151,70 +148,6 @@ public class ControllerHelper {
 
     }
 
-    /**
-     * When user presses button, this functions checks textfield's value, and
-     * updates the slider accordingly.
-     *
-     * @param button the button which gets pressed to update the slider.
-     * @param slider the slider which gets updated and tells the current gravity.
-     * @param textfield the textfield which holds the value that the slider gets set to.
-     */
-    public void customGravityInput(Button button, Slider slider, TextField textfield) {
-
-        button.setOnAction((event) -> {
-            Double value = 0.0;
-
-            if (testTextFieldForNumbers(textfield) == false) {
-
-                value = 0.0;
-
-            } else {
-                try {
-                    value = Double.valueOf(textfield.getText());
-                    System.out.println("Yes, value entered : " + value + " .");
-                    
-                    slider.setValue(value);
-
-                } catch (Exception e) {
-                    textfield.setText("");
-                }
-            }
-        });
-
-    }
-    int currentIndexOfMenuBar;
-
-    /**
-     * Fills a menuButton with menuItems. These menuItems have their action set
-     * to updating various texts according to their corresponding planetPreset
-     *
-     * @param slider updates slider
-     * @param textForGravity updates textForDisplay
-     * @param textForPlanetName the Text node which holds the planet's name in the stats
-     */
-    public void putItemsInMenuBar(Slider slider, Text textForGravity, Text textForPlanetName) { //, Rectangle medium
-
-        for (int i = 0; i < getPlanetPresetHash().size(); i++) {
-
-            MenuItem presetMenuItem = new MenuItem(getPlanetPresetHash().get(i).getName());
-            presetMenuItem.setId(String.valueOf(getPlanetPresetHash().get(i).indexPosition));
-            presetMenuItem.setOnAction((event) -> {
-
-                slider.setValue(getPlanetPresetHash().get(Integer.parseInt(presetMenuItem.getId())).getGravity()); //set the slider's value to the preset's defined gravity
-                // medium.setFill(giveColorToMedium(sliderValue));
-                //  updatesIndexOfRefractionText(textForDisplay, slider);
-                textForGravity.setText("Current Gravity (G) : " + getPlanetPresetHash().get(Integer.parseInt(presetMenuItem.getId())).getGravity());
-                textForPlanetName.setText("Current Planet : " + getPlanetPresetHash().get(Integer.parseInt(presetMenuItem.getId())).getName());
-            });
-        }
-
-    }
-
-    
-    public HashMap<Integer, PlanetPreset> getPlanetPresetHash() {
-        return planetPresetHash;
-
-    }
 
     public String getCsvFilePath() {
         return csvFilePath;

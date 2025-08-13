@@ -7,11 +7,9 @@ package lunarlandersimulator;
 import controllerclasses.LunarLanderController;
 import com.opencsv.exceptions.CsvException;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -27,11 +25,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import static javafx.scene.paint.Color.valueOf;
-import javafx.scene.paint.Paint;
+
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.stage.Modality;
 import javafx.util.Duration;
@@ -44,7 +40,7 @@ import static lunarlandersimulator.PhysicsHelper.gravitationalFieldBeforeCorrect
  * 
  * @author theo
  */
-public final class LunarLanderWorld extends GameEngine {
+public class LunarLanderWorld extends GameEngine {
 
     private static final Log log = LogFactory.getLog(LunarLanderWorld.class);
     /**
@@ -117,6 +113,7 @@ public final class LunarLanderWorld extends GameEngine {
     private double pauseEndTime;
     private double currentTimeSeconds = 0;
 
+
     /**
      * LunarLanderWorld's constructor method.
      * 
@@ -150,14 +147,11 @@ public final class LunarLanderWorld extends GameEngine {
         setSceneNodes(loader);
         setScene(new Scene(loader));
 
-        
-        collisionHandler.setTerrainH(lunarLanderController.getTerrainHbox());
-        setLunarlanderSimulationPane(lunarLanderController.getSimulationPane());
-        //lunarLanderController.getMenuButtonPlanetSelector().setId("3"); //Value of Earth in hashmap
-        
+        setLunarlanderSimulationPane(lunarLanderController.getSimulationAnchorPane());
 
-      
-        ChangeTerrainColor();
+        collisionEngine.setTerrainH(lunarLanderController.getTerrainHbox());
+        collisionEngine.setSpaceSimulationPane(lunarLanderController.getSimulationAnchorPane());
+
         addShipToLunarLanderPane(getShip());
         getShip().initPaneHeightAndWidth();
         getShip().initInitialSpaceShipPos(getShip().getSimulationPaneHeight()/9, getShip().getSimulationPaneHeight()/11);
@@ -175,8 +169,8 @@ public final class LunarLanderWorld extends GameEngine {
         });
 
         lunarLanderController.aboutWindow(lunarLanderController.helpLanding, "To land you must: "
-                + "\n -Decrease Horizontal speed to be less than : " + collisionHandler.getMaxSpeedX()
-                + "\n -Decrease Verticle speed to be less than : " + collisionHandler.getMaxSpeedY()
+                + "\n -Decrease Horizontal speed to be less than : " + collisionEngine.getMaxSpeedX()
+                + "\n -Decrease Verticle speed to be less than : " + collisionEngine.getMaxSpeedY()
                 + "\n -Make sure current angle is 0, or perpendicular with the surface.");
 
 
@@ -203,7 +197,7 @@ public final class LunarLanderWorld extends GameEngine {
         lunarLanderController.getButtonReset().setOnAction((event) -> {
             resetSimulation();
             lunarLanderController.victoryScreen.close();
-            lunarLanderController.getButtonPause().setText(getIsRunning() ? "Pause" : "Un-Pause");
+            lunarLanderController.getButtonPause().setText("Pause");
             setIsRunning(true);
         });
         
@@ -237,18 +231,16 @@ public final class LunarLanderWorld extends GameEngine {
         netVerticalForce = 0;
         netHorizontalForce = 0;
         rotationAnglePerFrame = 0;
-        collisionHandler.setHasShipTouchedDown(false);
-        collisionHandler.setHasWon(false);
+        collisionEngine.setHasShipTouchedDown(false);
+        collisionEngine.setHasWon(false);
         if (!getShip().getIsAlive()) {
             getShip().setIsAlive(true);
 
         }
-        for (Node node : collisionHandler.getSpaceShip().getSpaceShipGroup().getChildren()) {
+        for (Node node : collisionEngine.getSpaceShip().getSpaceShipGroup().getChildren()) {
             node.setVisible(true);
         }
         lunarLanderController.setTerrainHbox(lunarLanderController.terrainGenerator.generateWorld(lunarLanderController.getTerrainHbox())); //create new Terrain
-        lunarLanderController.HBoxPrefferedSetting(lunarLanderController.getTerrainHbox(), lunarLanderController.bottomSimulationPane);
-        ChangeTerrainColor();
         start();
     }
     /**
@@ -327,27 +319,6 @@ public final class LunarLanderWorld extends GameEngine {
      */
     private double netHorizontalForce;
 
-
-    /**
-     * Get the terrain, get the currently selected planet, set the terrain to
-     * that planet's color
-     */
-    public void ChangeTerrainColor() {
-
-        lunarLanderController.getTerrainHbox();
-
-        // System.out.println("selected name : " + lunarLanderController.getPlanetPresetHash().get(lunarLanderController.getMenuButtonPlanetSelector().getId()).getName());
-        for (int i = 0; i < lunarLanderController.getTerrainHbox().getChildren().size(); i++) {
-
-            Rectangle rect;
-            rect = (Rectangle) lunarLanderController.getTerrainHbox().getChildren().get(i);
-            Paint color = valueOf(lunarLanderController.getPlanetPresetHash().get(3).getColor()); //3 is for now just for Earth
-            rect.setFill(color);
-            lunarLanderController.getTerrainHbox().getChildren().set(i, rect);
-
-        }
-
-    }
     /**
      * Rotates the ship to the right or left by 2 increments.
      * The "2" is arbitrary and just works well for the simulation.
@@ -389,8 +360,7 @@ public final class LunarLanderWorld extends GameEngine {
      */
     @Override
     protected void checkCollisions() {
-        collisionHandler.collisionChecker();
-        lunarLanderController.terrainGenerator.shiftTerrain(collisionHandler.isShipWithinScreenBounds());
+        collisionEngine.collisionChecker();
     }
 
     float nanoToUnit = 1000000000;
@@ -409,10 +379,12 @@ public final class LunarLanderWorld extends GameEngine {
 
         return temp;
     }
+    @Override
+    public void updateGravity(){
+
+    }
 
     /**
-     * A method called every frame, used to update the stat trackers for the
-     * player's visual.
      *
      * @param elapsedTime The time between the previous and current frame.
      */
@@ -424,12 +396,12 @@ public final class LunarLanderWorld extends GameEngine {
         displayXVelocity = roundToOneDecimal(getShip().getCurrentXVelocity());
         displayYVelocity = roundToOneDecimal(getShip().getCurrentYVelocity());
 
-        lunarLanderController.setTextOfTextTimeSeconds("Time (s): " + roundToOneDecimal(currentTimeSeconds));
-        lunarLanderController.setTextOfTextVelocity("Velocity (m/s) : " + displayXVelocity + "x ," + displayYVelocity + " y");
-        lunarLanderController.setTextOfTextFuel("Fuel (L) : " + getShip().getRemainingFuel());
-        lunarLanderController.setTextOfTextAngle("Current Angle (degrees): " + getShip().getNormalizedAngleWithVertical());
+        lunarLanderController.setTextOfTextTimeSeconds("Time: " + roundToOneDecimal(currentTimeSeconds));
+        lunarLanderController.setTextOfTextVelocity("Velocity: " + displayXVelocity + "x ," + displayYVelocity + " y");
+        lunarLanderController.setTextOfTextFuel("Fuel: " + getShip().getRemainingFuel());
+        lunarLanderController.setTextOfTextAngle("Angle: " + getShip().getNormalizedAngleWithVertical());
 
-        lunarLanderController.getTextGravity().setText("Current Gravity : " + gravityMultiplier);
+        lunarLanderController.getTextGravity().setText("Gravity: " + gravityMultiplier);
 
         //System.out.println("Gravity : " + String.valueOf(accelerationDuetoGravity));
 
@@ -452,7 +424,7 @@ public final class LunarLanderWorld extends GameEngine {
         if(usingFuel) {
             getShip().loseFuel();
         }
-        accelerationDuetoGravity = gravitationalFieldBeforeCorrection(lunarLanderController.getTextPlanet(),shipCurrentHeightinKm*ratioScreenToSimulationMultiplier ) * gravityMultiplier ;
+        accelerationDuetoGravity = gravitationalFieldBeforeCorrection(shipCurrentHeightinKm*ratioScreenToSimulationMultiplier ) * gravityMultiplier ;
         double gravitationalForce = getShip().getMass() * accelerationDuetoGravity * gravityCorrection; // Fg = mg
         double thrustForceX = 0;
         double thrustForceY = 0;
@@ -487,9 +459,9 @@ public final class LunarLanderWorld extends GameEngine {
             shipThrustSound.setVolume(0);
         }
         //if the ship has collided with the terrain, check whether the ship has won.
-        if (collisionHandler.getHasShipTouchedDown()) {
+        if (collisionEngine.getHasShipTouchedDown()) {
 
-            victoryCondition(collisionHandler.isHasWon());
+            victoryCondition(collisionEngine.isHasWon());
 
             return true;
         }
@@ -525,7 +497,7 @@ public final class LunarLanderWorld extends GameEngine {
      */
     public void explodeTheShip() {
         ImageView explosion = new ImageView(new Image("images/Explosion.png"));
-        for (Node node : collisionHandler.getSpaceShip().getSpaceShipGroup().getChildren()) {
+        for (Node node : collisionEngine.getSpaceShip().getSpaceShipGroup().getChildren()) {
             node.setVisible(false);
         }
         //System.out.println("exploding");
@@ -551,14 +523,14 @@ public final class LunarLanderWorld extends GameEngine {
         //Check if ship should explode.
         // and Show victory/defeat screen.
         if (hasWon) {
-            collisionHandler.getSpaceShip().setIsAlive(true);
+            collisionEngine.getSpaceShip().setIsAlive(true);
             lunarLanderController.textOfResult.setText("Victory! You landed sucessfully");
             lunarLanderController.resultScreenSettings();
             lunarLanderController.victoryScreen.show();
         } else {
 
             explodeTheShip();
-            collisionHandler.getSpaceShip().setIsAlive(false);
+            collisionEngine.getSpaceShip().setIsAlive(false);
             lunarLanderController.textOfResult.setText("Failure, The ship crashed");
             lunarLanderController.resultScreenSettings();
             lunarLanderController.victoryScreen.show();
@@ -573,7 +545,6 @@ public final class LunarLanderWorld extends GameEngine {
     /**
      * Initializes the key events that the players needs to press to play the game.
      */
-    int count = 0;
     public void initShipRotateEvents() {
         scene.setOnKeyPressed(event -> {
             KeyCode code = event.getCode();
@@ -584,7 +555,6 @@ public final class LunarLanderWorld extends GameEngine {
                     case D ->
                         rotatingRight = true;
                     case W ->{
-                        System.out.println("Pressed " + ++count);
                         usingFuel = true;
 
                     }
@@ -619,16 +589,8 @@ public final class LunarLanderWorld extends GameEngine {
      * @param ship ship to be places in the pane.
      */
     public void addShipToLunarLanderPane(SpaceShip ship) {
-        AnchorPane tempSimAPane = (AnchorPane) getSceneNodes().lookup("#SimulationAnchorPane");
-        int firstIndex = tempSimAPane.getParent().getChildrenUnmodifiable().indexOf(tempSimAPane);
 
-        Pane tempSimPane = (Pane) getSceneNodes().getChildren().get(firstIndex).lookup("#SimulationPane");
-        int PaneInVboxIndex = tempSimPane.getParent().getChildrenUnmodifiable().indexOf(tempSimPane);
-
-        AnchorPane simulationAPPane = (AnchorPane) getSceneNodes().getChildren().get(firstIndex);
-        Pane simulationPane = (Pane) simulationAPPane.getChildren().get(PaneInVboxIndex);
-        
-        simulationPane.getChildren().add(ship.getSpaceShipGroup());
+        getLunarlanderSimulationAnchorPane().getChildren().add(ship.getSpaceShipGroup());
         
     }
     //TODO: make gravity weaker as the ship is further from surface.

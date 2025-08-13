@@ -5,6 +5,7 @@
 package lunarlandersimulator;
 
 import javafx.animation.AnimationTimer;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,11 +23,11 @@ public class GameEngine {
     /**
      * Reference to the Lunar Lander simulation Pane
      */
-    private Pane LunarlanderSimulationPane;
+    private AnchorPane LunarlanderSimulationAnchorPane;
     /**
      * CollisionEngine object taking in the space ship object as a parameter.
      */
-    public CollisionEngine collisionHandler = new CollisionEngine(ship);
+
     /**
      * Desired frames per second of the gameLoop.
      */
@@ -53,7 +54,7 @@ public class GameEngine {
     boolean wasPaused = false;
     public long lastTime = System.nanoTime();
     private long frameTime = 0;
-    public double currentNetTime;
+    public CollisionEngine collisionEngine = new CollisionEngine(getShip());
     protected final AnimationTimer timer = new AnimationTimer() {
         /**
          * The handle method that is called on each frame update.
@@ -115,8 +116,9 @@ public class GameEngine {
         
         checkCollisions();
         updateStats(elapsedTime);
+        collisionEngine.isShipWithinScreenBounds();
         //System.out.println(elapsedTime);
-         if (!(collisionHandler.getHasShipTouchedDown()))
+         if (!(collisionEngine.getHasShipTouchedDown()))
             { 
             rotateShip();
             }
@@ -127,11 +129,17 @@ public class GameEngine {
             stop();
 
         }
+        updateGravity();
     }
     /**
      * Checks collisions.
      */
     protected void checkCollisions() {
+
+    }
+
+    protected void updateGravity(){
+
 
     }
     /**
@@ -165,20 +173,19 @@ public class GameEngine {
     /**
      * @return The pane used for the lunar lander simulation.
      */
-    public Pane getLunarlanderSimulationPane() {
-        return LunarlanderSimulationPane;
+    public AnchorPane getLunarlanderSimulationAnchorPane() {
+        return LunarlanderSimulationAnchorPane;
     }
 
     /**
      * Sets the pane used for the lunar lander simulation.
      *
-     * @param LunarlanderSimulationPane The pane used for the lunar lander simulation.
+     * @param LunarlanderSimulationAnchorPane The pane used for the lunar lander simulation.
      */
-    public void setLunarlanderSimulationPane(Pane LunarlanderSimulationPane) {
-        this.LunarlanderSimulationPane = LunarlanderSimulationPane;
+    public void setLunarlanderSimulationPane(AnchorPane LunarlanderSimulationAnchorPane) {
+        this.LunarlanderSimulationAnchorPane = LunarlanderSimulationAnchorPane;
 
-        // Set the space simulation pane for the collision handler
-        collisionHandler.setSpaceSimulationPane(LunarlanderSimulationPane);
+
     }
     public boolean getIsRunning() {
         return isRunning;
@@ -194,13 +201,6 @@ public class GameEngine {
         this.ship = ship;
     }
 
-    public CollisionEngine getCollisionHandler() {
-        return collisionHandler;
-    }
-
-    public void setCollisionHandler(CollisionEngine collisionHandler) {
-        this.collisionHandler = collisionHandler;
-    }
 
     public double getElapsedTime() {
         return elapsedTime;

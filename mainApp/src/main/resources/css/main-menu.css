@@ -1,0 +1,96 @@
+.main-container {
+    -fx-background-color: #000033;
+}
+
+
+.space-background {
+    -fx-background-color: linear-gradient(to bottom, #000011, #000044);
+}
+
+
+.twinkling-star {
+    -fx-fill: white;
+    -fx-effect: dropshadow(gaussian, #66ccff, 10, 0.5, 0, 0);
+}
+
+
+.cartoon-menu-bar {
+    -fx-background-color: #000066;
+    -fx-border-color: #3399ff;
+    -fx-border-width: 0 0 3 0;
+    -fx-border-style: solid;
+    -fx-effect: dropshadow(gaussian, rgba(51,153,255,0.8), 15, 0.5, 0, 0);
+}
+
+.menu-title {
+    -fx-text-fill: #99ccff;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.menu-item {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 24px;
+}
+
+
+.main-title {
+    -fx-text-fill: linear-gradient(to bottom, #66ccff, #3399ff);
+    -fx-font-family: "Bauhaus 93";
+    -fx-font-size: 48px;
+    -fx-effect: dropshadow(gaussian, #003366, 10, 0.8, 0, 0);
+}
+
+
+.menu-button {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 40;
+    -fx-background-color: #000066;
+    -fx-background-radius: 20;
+    -fx-border-color: #3399ff;
+    -fx-border-radius: 20;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(51,153,255,0.8), 10, 0.5, 0, 0);
+}
+.menu-help-button{
+    -fx-text-fill: #e0e0e0;
+    -fx-font-family: "Comic Sans MS";
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 40;
+    -fx-background-color: #000066;
+    -fx-background-radius: 20;
+    -fx-border-color: #3399ff;
+    -fx-border-radius: 20;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(51,153,255,0.8), 10, 0.5, 0, 0);
+
+}
+
+.menu-button:hover {
+    -fx-background-color: #003399;
+    -fx-text-fill: white;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(102,204,255,0.9), 15, 0.7, 0, 0);
+}
+
+
+.spaceship-decoration {
+    -fx-fill: linear-gradient(to bottom, #66ccff, #0033cc);
+    -fx-stroke: #3399ff;
+    -fx-stroke-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(102,204,255,0.8), 15, 0.5, 0, 0);
+}
+
+.cartoon-planet {
+    -fx-fill: radial-gradient(center 50% 50%, radius 50%, #000066, #003366);
+    -fx-stroke: #3399ff;
+    -fx-stroke-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(51,153,255,0.8), 30, 0.5, 0, 0);
+}

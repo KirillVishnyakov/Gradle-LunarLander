@@ -1,53 +1,82 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
-*/
-/* 
-    Created on : Apr. 16, 2023, 10:02:21 a.m.
-    Author     : Isabel Romero
-*/
-
-.chart{
-    -fx-padding: 10px;
-    
-}
-
-.axis-label {
-  -fx-text-fill: #FFFFFF;
-}
- 
-.chart-legend {
-   -fx-background-color:  transparent;
-   -fx-padding: 20px;
-}
- 
-.chart-legend-item-symbol{
-   -fx-background-radius: 0;
-}
- 
-.chart-legend-item{
-    -fx-text-fill: #191970;
-}
- 
-.chart-alternative-row-fill {
-    -fx-fill: transparent;
-    -fx-stroke: transparent;
-    -fx-stroke-width: 0;
-}
-
-.axis {    
-    -fx-tick-label-fill: #FFFFFF;
-    -fx-font-family: Tahoma;
-    -fx-tick-length: 10;
-    -fx-minor-tick-length: 5;
-}
-
-.chart-title {
-    -fx-font-size: 15px;
-    -fx-text-fill: #FFFFFF;
-}
 
 .transparent-canvas {
     -fx-background-color: transparent;
     -fx-opacity: 1.0; /* Adjust as needed */
+}
+
+.soft-button {
+    -fx-background-color: linear-gradient(to bottom, #f9f9f9, #e6e6e6);
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #d0d0d0;
+    -fx-border-width: 1;
+
+    -fx-text-fill: #333333;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 6, 0, 0, 2);
+
+    -fx-padding: 8 16 8 16;
+}
+
+.soft-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #dddddd);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 8, 0, 0, 3);
+}
+
+.soft-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #e0e0e0, #cccccc);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 3, 0, 0, 1);
+}
+
+.cartoon-text {
+
+    -fx-font-family: "Comic Sans MS", "Comic Neue", cursive;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+    -fx-fill: #ffcc00; /* Bright yellow fill */
+    /* Drop shadow for depth */
+    -fx-effect: dropshadow(one-pass-box, #ff3399, 2, 0, 1, 1);
+}
+
+.transparent-outline-button {
+    /* Remove the fill */
+    -fx-background-color: transparent;
+
+    /* Make the border thick and black */
+    -fx-border-color: #1818bc;
+    -fx-border-width: 3px;
+    -fx-border-radius: 8px;
+
+    /* Optional: rounded corners */
+    -fx-background-radius: 8px;
+
+    /* Text color */
+    -fx-text-fill: #2e2ee6;
+
+    /* Make it bold for clarity */
+    -fx-font-weight: bold;
+
+    /* Padding for nicer look */
+    -fx-padding: 6 14 6 14;
+}
+
+/* Hover effect: change background transparency slightly */
+.transparent-outline-button:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.05);
+}
+.comic-outline-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: #030340;
+    -fx-border-width: 5px;
+    -fx-border-radius: 16px;
+    -fx-background-radius: 16px;
+
+    /* Outer shadow for depth */
+    -fx-effect: dropshadow(one-pass-box, #030340, 4, 0, 2, 2);
+}
+.blackBackground {
+    -fx-background-color: black;
+
 }

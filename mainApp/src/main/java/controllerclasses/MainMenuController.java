@@ -4,6 +4,7 @@
  */
 package controllerclasses;
 
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import lunarlandersimulator.LunarLanderWorld;
 import com.opencsv.exceptions.CsvException;
@@ -36,7 +37,8 @@ public class MainMenuController extends ControllerHelper {
     @FXML
     AnchorPane anchorPaneMainBack;
     @FXML
-    ImageView spaceShipInMainMenu;
+    Label startGame;
+
 
     Stage primaryStage;
 
@@ -62,7 +64,7 @@ public class MainMenuController extends ControllerHelper {
 
 
 
-        spaceShipInMainMenu.setOnMousePressed((e) -> {
+        startGame.setOnMousePressed((e) -> {
 
             Stage LunarLanderStage = new Stage();
             try {
@@ -80,6 +82,8 @@ public class MainMenuController extends ControllerHelper {
                 Logger.getLogger(MainMenuController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
+
+
 
     }
 

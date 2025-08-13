@@ -73,13 +73,12 @@ public class PhysicsHelper {
     /**
      * This formula is derived from the gravitational Field formula that is used to find the 
      * gravitational force between two masses.
-     * @param Planet
      * @param shipHeight
      * @return acceleration due to gravitational force before the correction.
      */
-    public static double gravitationalFieldBeforeCorrection(String Planet, double shipHeight) {
+    public static double gravitationalFieldBeforeCorrection(double shipHeight) {
         
-        double planetRadius = radiusOfPlanet(Planet);
+        double planetRadius = 6371000.0;
         //System.out.println(planetRadius +" / "+ planetRadius + " + " + shipHeight);
         return GRAVITATIONAL_CONSTANT_EARTH * (planetRadius/(planetRadius + shipHeight)) * (planetRadius/(planetRadius + shipHeight));
     }

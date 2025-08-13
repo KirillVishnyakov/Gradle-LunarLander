@@ -8,6 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
@@ -20,7 +21,7 @@ import javafx.scene.shape.Rectangle;
 public class CollisionEngine {
 
     private SpaceShip spaceShip;
-    private Pane spaceSimulationPane;
+    private AnchorPane spaceSimulationAnchorPane;
     private Rectangle exampleTerrain;
     private ImageView spaceShipImageView;
     private Bounds shipBounds;
@@ -75,7 +76,7 @@ public class CollisionEngine {
 
         Bounds boundsInNode = node.getBoundsInLocal();
         Bounds boundsInScene = node.localToScene(boundsInNode);
-        return getSpaceSimulationPane().sceneToLocal(boundsInScene);
+        return getSpaceSimulationAnchorPane().sceneToLocal(boundsInScene);
 
     }
     
@@ -98,13 +99,13 @@ public class CollisionEngine {
             //if less than zero, ship is to the left of the screen.
             //teleport ship to rightside and -100 for a little room
             if (spaceShip.getSpaceShipGroup().getTranslateX() < 0 ){
-                 spaceShip.getSpaceShipGroup().setTranslateX(spaceSimulationPane.getLayoutBounds().getWidth()-100);
+                 spaceShip.getSpaceShipGroup().setTranslateX(spaceSimulationAnchorPane.getLayoutBounds().getWidth());
                  return 1;
                 }
             //if ship is to the right
             //teleport ship to leftside and +100 for a little room
-            if (spaceShip.getSpaceShipGroup().getTranslateX() > spaceSimulationPane.getLayoutBounds().getWidth()){
-                spaceShip.getSpaceShipGroup().setTranslateX(100);
+            if (spaceShip.getSpaceShipGroup().getTranslateX() > spaceSimulationAnchorPane.getLayoutBounds().getWidth()){
+                spaceShip.getSpaceShipGroup().setTranslateX(0);
                  return 2; 
             }
              //if the ship is in the negative, it is at the top
@@ -114,7 +115,7 @@ public class CollisionEngine {
                  return 3;
                 }
             //this event should almost never trigger due to the terrain at the bottom.
-            if (spaceShip.getSpaceShipGroup().getTranslateY() > spaceSimulationPane.getLayoutBounds().getHeight() ){
+            if (spaceShip.getSpaceShipGroup().getTranslateY() > spaceSimulationAnchorPane.getLayoutBounds().getHeight() ){
 
                  return 4;
                 }
@@ -153,12 +154,12 @@ public class CollisionEngine {
         //terrainH.getChildren().add(hitbox);
     }
 
-    public Pane getSpaceSimulationPane() {
-        return spaceSimulationPane;
+    public AnchorPane getSpaceSimulationAnchorPane() {
+        return spaceSimulationAnchorPane;
     }
 
-    public void setSpaceSimulationPane(Pane spaceSimulationPane) {
-        this.spaceSimulationPane = spaceSimulationPane;
+    public void setSpaceSimulationPane(AnchorPane spaceSimulationAnchorPane) {
+        this.spaceSimulationAnchorPane = spaceSimulationAnchorPane;
     }
 
     public void setShipLanded(boolean shipLanded) {

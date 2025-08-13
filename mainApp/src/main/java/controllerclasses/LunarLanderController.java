@@ -44,8 +44,7 @@ public class LunarLanderController extends ControllerHelper {
     public MenuItem helpControls;
     @FXML
     public MenuItem helpAbout;
-    @FXML
-    Pane SimulationPane;
+
     @FXML
     AnchorPane SimulationAnchorPane;
     @FXML
@@ -54,8 +53,6 @@ public class LunarLanderController extends ControllerHelper {
     Text textVelocity;
     @FXML
     Text textFuel;
-    @FXML
-    Text textPlanet;
     @FXML
     Text textTimeSeconds;
     @FXML
@@ -73,8 +70,6 @@ public class LunarLanderController extends ControllerHelper {
     Stage primaryStage;
     public TerrainGeneration terrainGenerator = new TerrainGeneration();
 
-
-    public double bottomSimulationPane;
     public Stage infoUIScreen = new Stage();
     public Stage victoryScreen = new Stage();
     public Text textOfResult = new Text();
@@ -134,19 +129,6 @@ public class LunarLanderController extends ControllerHelper {
     
 
     }
-    
-    /**
-     * Sets the default settings for the terrain as to maintain consistency and
-     * aesthetic integrity.
-     *
-     * @param terrain   the terrain which is being modified.
-     * @param bottomSim the location of the terrain in the scene.
-     */
-    public void HBoxPrefferedSetting(HBox terrain, double bottomSim) {
-
-        terrain.setBackground(Background.EMPTY);
-        terrain.setLayoutX(bottomSim);
-    }
 
     /**
      * The initialize function sets all the nodes for the LunarLander scene.
@@ -154,10 +136,7 @@ public class LunarLanderController extends ControllerHelper {
     @FXML
     void initialize() {
 
-        double bottomSimulationPane = (getSimulationPane().getLayoutX() + getSimulationPane().getHeight());
-        System.out.println("war "+ terrainHbox);
         terrainHbox = terrainGenerator.generateWorld(terrainHbox);
-        HBoxPrefferedSetting(terrainHbox, bottomSimulationPane);
         aboutWindow(helpLanding, infoHelpLanding);
         aboutWindow(helpControls, infoControls);
         aboutWindow(helpAbout, infoSimulation);
@@ -182,7 +161,6 @@ public class LunarLanderController extends ControllerHelper {
         infoUIScreen.setResizable(false);
         infoUIScreen.setTitle("UI info Screen");
 
-        setTextOfTextPlanet("Set Planet : Earth"); //initial setting
 
         setBackgroundImage(new ImageView(new Image("images/space.png")));
 
@@ -196,10 +174,10 @@ public class LunarLanderController extends ControllerHelper {
      */
     public void setBackgroundImage(ImageView background) {
 
-        getSimulationPane().getChildren().addFirst(background);
-        getSimulationPane().toBack();
-        background.fitWidthProperty().bind(getSimulationPane().widthProperty());
-        background.fitHeightProperty().bind(getSimulationPane().heightProperty());
+        getSimulationAnchorPane().getChildren().addFirst(background);
+        getSimulationAnchorPane().toBack();
+        background.fitWidthProperty().bind(getSimulationAnchorPane().widthProperty());
+        background.fitHeightProperty().bind(getSimulationAnchorPane().heightProperty());
 
     }
 
@@ -239,12 +217,12 @@ public class LunarLanderController extends ControllerHelper {
         this.infoSimulation = infoSimulation;
     }
 
-    public Pane getSimulationPane() {
-        return SimulationPane;
+    public AnchorPane getSimulationAnchorPane() {
+        return SimulationAnchorPane;
     }
 
-    public void setSimulationPane(Pane SimulationPane) {
-        this.SimulationPane = SimulationPane;
+    public void setSimulationAnchorPane(AnchorPane SimulationAnchorPane) {
+        this.SimulationAnchorPane = SimulationAnchorPane;
     }
 
     public HBox getTerrainHbox() {
@@ -275,14 +253,6 @@ public class LunarLanderController extends ControllerHelper {
         this.textFuel.setText(textFuel);
     }
 
-    public void setTextOfTextPlanet(String textPlanet) {
-        this.textPlanet.setText(textPlanet);
-    }
-    
-    public String getTextPlanet(){
-    
-        return this.textPlanet.getText();
-    }
     public void setTextOfTextTimeSeconds(String textTimeSeconds) {
         this.textTimeSeconds.setText(textTimeSeconds);
     }
