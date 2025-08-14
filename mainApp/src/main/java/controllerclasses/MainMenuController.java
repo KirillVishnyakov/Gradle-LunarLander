@@ -33,13 +33,8 @@ public class MainMenuController extends ControllerHelper {
     // ControllerHelper controlHelp;
     @FXML
     MenuItem menuItemHelp;
-
-    @FXML
-    AnchorPane anchorPaneMainBack;
     @FXML
     Label startGame;
-
-
     Stage primaryStage;
 
     String aboutTheWindow = "This is the main menu. "

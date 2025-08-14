@@ -78,28 +78,6 @@ public class ControllerHelper {
         return gravityHashMap;
     }
 
-
-    /**
-     * Sets up a bunch of basic slider settings.
-     *
-     * @param slider the slider which is being set
-     * @param max the max distance of the slider. Should be 30 as none of the presets go higher
-     */
-    //This function may be too specified and non applicable outside of the original intention
-    public void sliderSetup(Slider slider, Double max) {
-
-        slider.setValue(1);
-        slider.setMin(0);
-        slider.setMax(max);
-        slider.setShowTickLabels(true);
-        slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(5);
-        slider.setMinorTickCount(99);
-        slider.setSnapToTicks(true);
-        slider.setBlockIncrement(0.1);
-
-    }
-
     /**
      * Receives a menuItem and sets it's action to creating an alert
      * corresponding to the "message"
@@ -114,43 +92,5 @@ public class ControllerHelper {
 
     }
 
-    /**
-     * Receives a textfield and checks if the inputted value has numbers. Used
-     * to avoid running number only functions on letters that the user may have
-     * input.
-     *
-     * @param textfield the textfield's value is tested for Errors
-     * @return returns whether the TextField is safe to use in number functions
-     */
-    public boolean testTextFieldForNumbers(TextField textfield) {
-
-        double value = 0.0;
-
-        if (textfield.getText().equals("")) {
-            System.out.println("Text field is empty");
-            textfield.setText("Text field is empty");
-            return false;
-        } else 
-        {
-
-            try {
-
-                value = Double.parseDouble(textfield.getText());
-                return true;
-
-            } catch (Exception e) {
-                System.out.println("Please enter a number.");
-                textfield.setText("Please enter a number.");
-                return false;
-            }
-
-        }
-
-    }
-
-
-    public String getCsvFilePath() {
-        return csvFilePath;
-    }
 
 }

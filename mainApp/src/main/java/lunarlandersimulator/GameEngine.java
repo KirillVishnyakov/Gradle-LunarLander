@@ -104,10 +104,6 @@ public class GameEngine {
 
     }
 
-    protected void changeGravity() {
-
-    }
-
     /**
     * Updates the game state, including checking for collisions, updating statistics,
     * and managing ship physics.

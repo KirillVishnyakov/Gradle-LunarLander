@@ -122,7 +122,7 @@ public class LunarLanderWorld extends GameEngine {
         initialFuel = 1000;
         shipThrustSound = new MediaPlayer(new Media(getClass().getClassLoader().getResource("sounds/spaceShipLaunch.mp3").toString()));
         shipThrustSound.setCycleCount(MediaPlayer.INDEFINITE);
-        shipThrustSound.setVolume(0.4);//make the audioClip silent.
+        shipThrustSound.setVolume(0.0);//make the audioClip silent.
         shipThrustSound.play();
         ratioScreenToSimulationMultiplier = 1000;
         rotationIncrement = 2;
@@ -185,7 +185,7 @@ public class LunarLanderWorld extends GameEngine {
                 start();
                 if(usingFuel){
 
-                    shipThrustSound.setVolume(0.4);
+                    shipThrustSound.setVolume(0.2);
                 }
             }
             setIsRunning(!getIsRunning());
@@ -441,7 +441,7 @@ public class LunarLanderWorld extends GameEngine {
         if (usingFuel) {
 
             if(getShip().getRemainingFuel() >= 1){
-                shipThrustSound.setVolume(0.4); //play the thrust sound effect.
+                shipThrustSound.setVolume(0.2); //play the thrust sound effect.
                 thrustForceX = getShip().getThrustForceInX();
                 thrustForceY = getShip().getThrustForceInY();
                 getShip().setRemainingFuel(getShip().getRemainingFuel() - 1); //remove 1 unit of fuel.
