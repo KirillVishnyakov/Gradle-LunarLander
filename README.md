@@ -1,19 +1,25 @@
 # Simple Lunar Lander
 
-### Credits  
+Simple Lunar Lander game made with Java.
+## Credits  
 - [@TheOdawg](https://github.com/TheOdawg) co-contributor of the orginal version of this project.  
 
-## Description <a name="description"></a>
+## Features
+* SceneBuilder
+* JavaFx
+* CSS
 
+## Preview
+https://github.com/user-attachments/assets/f652197a-ed2a-4433-b081-eabe333f7b9c
 
-#### Lunar Lander Simulator  <a name="lunarLanderSimulatorDescription"></a>
-<img src="/mainApp/src/main/resources/images/LLThumbnail.jpg" width="496" height="446">
+## Prerequisites
+Gradle and Java installed
 
-
-
-### Compile and running
-You need gradle and java installed<br><br>
-in command line navigate to <br> <br>
-\Gradle-LunarLander and enter: gradle run<br>
+### Compiling and running
+```
+git clone https://github.com/KirillVishnyakov/Gradle-LunarLander.git
+cd Gradle-LunarLander
+gradle run
+```
 
 
